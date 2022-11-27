@@ -10,4 +10,5 @@ li[4].textContent='changed item';
 for(var i=0; i<li.length;i++)
 {
     li[i].style.color='blue';
+    console.log('hii');
 }
