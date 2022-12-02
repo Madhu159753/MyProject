@@ -5,23 +5,56 @@
             <label>name</label>
             <input type="text" name="userName" required/>
             <label>Email</label>
-            <input type="text" name="userEmail" required />
+            <input type="text" name="emailId" required />
             <button>Submit</button>
-
         </form>
+        <ul id ="listOfUsers">
+
+        </ul>
         <script>
             function localStoragevalue(event){
                 event.preventDefault();
                 const name=event.target.userName.value;
-                const email=event.target.userEmail.value;
+                const email=event.target.emailId.value;
                 let obj={
                    name,
                    email
                 }
-             let obj_serialized=JSON.stringify(obj);
-
-                localStorage.setItem("obj",obj_serialized);
+                let obj_serialized=JSON.stringify(obj);
+              localStorage.setItem(obj.email,obj_serialized);
+              showNewUserOnScreen(obj)
             }
+            window.addEventListener("DOMContentLoaded",()=>{
+              const localStorageObj=localStorage;
+              const localStorageKeys=Object.keys(localStorageObj);
+              for(var i=0;i<localStorageKeys.length;i++)
+              {
+                const key=localStorageKeys[i];
+                const userDetailsString=localStorageObj[key];
+                const userDetailsObj=JSON.parse(userDetailsString);
+                showNewUserOnScreen(userDetailsObj)
+              }
+            })
+             function showNewUserOnScreen(user)
+             {
+              if(localStorage.getItem(user.email!=null))
+              {
+                removeUserFromScreen(user.email);
+              }
+              const parentNode=document.getElementById('listOfUsers')
+              const childHTML=`<li>${user.name}-${user.email}</li>`;
+              parentNode.innerHTML=parentNode.innerHTML+childHTML;
+             }
+             function removeUserFromScreen(emailId)
+             {
+              const parentNode=document.getElementById('listOfUsers');
+              const childNodeToBeDeleted=document.getElementById('listOfUsers');
+              if(childNodeToBeDeleted)
+              {
+             parentNode.removeChild(childNodeToBeDeleted);
+              }
+             }
+        
         </script>
     </body>
 </html>
