@@ -3,9 +3,9 @@
     <body>
         <form onsubmit="localStoragevalue(event)">
             <label>name</label>
-            <input type="text" name="userName" required/>
+            <input id="userName" type="text" name="userName" required/>
             <label>Email</label>
-            <input type="text" name="emailId" required />
+            <input id="emailId" type="text" name="emailId" required />
             <button>Submit</button>
         </form>
         <ul id ="listOfUsers">
@@ -41,19 +41,36 @@
               {
                 removeUserFromScreen(user.email);
               }
+                
               const parentNode=document.getElementById('listOfUsers')
-              const childHTML=`<li>${user.name}-${user.email}</li>`;
+              const childHTML=`<li id=${user.email}>${user.name} - ${user.email}
+                         <button onclick=deleteUser('${user.email}')>Delete User</button>
+                         <button onclick=EditUser('${user.email}','${user.name}')>Edit</button>
+                  </li>`
               parentNode.innerHTML=parentNode.innerHTML+childHTML;
+               
+             }
+             function EditUser(emailId)
+             {
+              document.getElementById('userName').value=name;
+              document.getElementById('emailId').value=emailId;
+              deleteUser(emailId)
+              removeUserFromScreen(emailId)
+             }
+             function deleteUser(emailId)
+             {
+              console.log(emailId) 
+              localStorage.removeItem(emailId);
+              removeUserFromScreen(emailId);
              }
              function removeUserFromScreen(emailId)
              {
               const parentNode=document.getElementById('listOfUsers');
-              const childNodeToBeDeleted=document.getElementById('listOfUsers');
-              if(childNodeToBeDeleted)
-              {
+              const childNodeToBeDeleted=document.getElementById(emailId);
              parentNode.removeChild(childNodeToBeDeleted);
+          
               }
-             }
+             
         
         </script>
     </body>
