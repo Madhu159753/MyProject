@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>call back</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    </head>
+    <body>
+        <ul id="list"></ul>
+        <script>
+            const posts=[
+                {title:'post one',body:'this is post one',createdAt:new Date().getTime()},
+                {title:'post two',body:'this is post two',createdAt:new Date().getTime()}
+            ]; 
+            let setIntervalId=0;
+            function getPost(){
+                clearInterval(setIntervalId)
+               setIntervalId= setInterval(()=>{
+                 let output='';
+                 for( let i=0;i<posts.length;i++){
+                    output+=`<li>${posts[i].title} -- last updated ${Math.floor((new Date().getTime()
+                    -posts[i].createdAt)/1000)}-second ago</li>`
+                    }
+                    document.body.innerHTML=output;
+                  
+                 },1000);
+            }
+            function createPost(post){
+                return new Promise((resolve,reject)=>{
+                    setTimeout(()=>{
+                  posts.push({...post,createdAt:new Date().getTime()});
+                  
+                  const error=false;
+                   if(!error)
+                   {
+                    resolve("hgjgj");
+                   }
+                   else{
+                    reject('Error:something went wrong');
+                   }
+
+                  
+                },1000);
+                });
+            }
+            function createPost4(post){
+               return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    posts.push({...post,createdAt:new Date().getTime()});
+              const error=false;
+              if(!error)
+              {
+                resolve("every thing is fine");
+              }
+              else{
+                reject("some error occure");
+              }
+
+                },1000);
+               });
+            }
+            function deletePost()
+            {
+                return new Promise((resolve,reject)=>{
+                    setTimeout(()=>{
+                        if(posts.length>0)
+                        {
+                        const last=posts.pop();
+                        resolve(last);
+                        }
+                        else{
+                            reject("array is now empty");
+                        }
+
+                    },1000);
+
+                });
+            }
+            const user={
+                username:'madhu',
+                lastActivityTime:'2nd september'
+            }
+           function updateLastActivityTime(){
+                return new Promise((resolve,reject)=>{
+                 setTimeout(()=>{
+                    user.lastActivityTime=new Date().getTime();
+                    resolve(user.lastActivityTime);
+                 },1000);
+                })
+            }
+            function  userUpdatePost(){
+            
+                Promise.all([createPost,updateLastActivityTime])
+                .then(( [createPostresolve,updateLastActivityTimeresolve])=>{
+                        console.log(updateLastActivityTimeresolve);
+                    })
+                    .catch(err=>console.log(err))
+             }
+            createPost({title:'post third',body:'this is post third'}).then(getPost);
+            createPost4({title:'post four'}).then(()=>{
+                getPost();
+                userUpdatePost();
+                deletePost().then(()=>{
+                    getPost();
+                    deletePost().then(()=>{
+                        getPost();
+                        deletePost().then(()=>{
+                            getPost();
+                            deletePost().then(()=>{
+                                //getPost();
+                               // deletePost().then(()=>{})
+                               //.catch((err)=>{
+                                 // console.log("inside catch block",err);
+                                })
+                            })
+                        })
+                    })
+                })
+                
+           // })
+            .catch(err =>console.log(err));
+            createPost4({title:'post four'},getPost())
+        
+        
+        </script>
+    </body>
+</html>
