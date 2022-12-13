@@ -41,7 +41,7 @@ edit.appendChild(document.createTextNode('EDIT'));
 li.append(edit);
 
  }
-
+function removeItem(e)
 {
     if(e.target.classList.contains('delete'));
     {
@@ -52,3 +52,27 @@ li.append(edit);
     }
     }
 }
+var filter=document.getElementById('filter');
+
+//filter event
+filter.addEventListener('keyup',filterItem);
+// filter item function
+function filterItem(e)
+{
+    //convert text to lower
+    var text=e.target.value.toLowerCase();
+  //get lis
+    var items=itemList.getElementsByTagName('li');
+    // conver toan Array
+    Array.from(items).forEach(function(item){
+ 
+        var itemName=item.firstChild.textContent;
+        if(itemName.toLocaleLowerCase().indexOf(text)!= -1)
+        {
+            item.style.display='block';
+        }
+        else{
+            item.style.display='none';
+        }
+    });
+} 

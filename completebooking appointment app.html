@@ -54,12 +54,12 @@
              {
               document.getElementById('userName').value=name;
               document.getElementById('emailId').value=emailId;
-              deleteUser(emailId)
+              //deleteUser(emailId)
               removeUserFromScreen(emailId)
              }
              function deleteUser(emailId)
              {
-              console.log(emailId) 
+             // console.log(emailId) 
               localStorage.removeItem(emailId);
               removeUserFromScreen(emailId);
              }
@@ -70,6 +70,7 @@
              parentNode.removeChild(childNodeToBeDeleted);
           
               }
+              
              
         
         </script>
