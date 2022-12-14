@@ -8,9 +8,12 @@
             <input id="emailId" type="text" name="emailId" required />
             <button>Submit</button>
         </form>
-        <ul id ="listOfUsers">
+            <ul id ="listOfUsers">
 
         </ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js">
+
+        </script>
         <script>
             function localStoragevalue(event){
                 event.preventDefault();
@@ -20,9 +23,21 @@
                    name,
                    email
                 }
-                let obj_serialized=JSON.stringify(obj);
-              localStorage.setItem(obj.email,obj_serialized);
-              showNewUserOnScreen(obj)
+                
+              axios.post("https://crudcrud.com/api/c8d9d7d3c3e14500b25b52dc0d1ce47b/bookingApp",obj)
+              .then((response)=>{
+                showNewUserOnScreen(response.data)
+                console.log(response)
+              })
+              .catch((err)=>{
+                document.body.innerHTML=document.body.innerHTML +"<h2>something went wrong </h2>"
+                console.log(err);
+              })
+              
+              
+              //let obj_serialized=JSON.stringify(obj);
+                 //localStorage.setItem(obj.email,obj_serialized);
+                //showNewUserOnScreen(obj)
             }
             window.addEventListener("DOMContentLoaded",()=>{
               const localStorageObj=localStorage;
