@@ -35,6 +35,7 @@
         <ul id="list">
 
         </ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
         <script>
             function localStorageValue(event){
                 event.preventDefault();
@@ -48,55 +49,69 @@
                     description,
                     choose
                 }
-                let obj_serialized=JSON .stringify(obj);
-                localStorage.setItem(obj.ide,obj_serialized); 
-                showDetailsOnScreen(obj)           
+                 axios.post("https://crudcrud.com/api/333c58a4c79245f9b49de23a419bd808/ExpenseTracker",obj)
+                 .then((response)=>{
+                 
+                    showDetailsOnScreen(response.data);
+                    console.log(response);
+                 } )  
+                 .catch((err)=>{
+                    document.body.innerHTML=document.body.innerHTML+"<h2>something went worng</h2>"
+                    console.log(err);
+                 })       
             }
-            function showDetailsOnScreen(user)
+           function showDetailsOnScreen(user)
             {
                 
-              if(localStorage.getItem(user.ide!=null))
-              {
-                removeUserFromScreen(user.ide);
-              }
+              
               const parentNode=document.getElementById('list')
-              const childHTML=`<li id=${user.ide}>${user.ide}-${user.fill}-
+              const childHTML=`<li id=${user._id}>${user.ide}-${user.fill}-
                 ${user.description} -${user.choose}
-                <button onclick=deleteExpenses('${user.ide}')>Delete Expenses</button>
-                <button onclick=EditExpenses('${user.email}')>EditeExpenses</button>
+                <button onclick=deleteExpenses('${user._id}')>Delete Expenses</button>
+                <button onclick=EditExpenses('${user._id}','${user.ide}','${user.fill}','
+                ${user.description}','${user.choose})>EditeExpenses</button>
                 </li>`
                 parentNode.innerHTML=parentNode.innerHTML+childHTML;
             }
             window.addEventListener("DOMContentLoaded",()=>{
-                const localStorageObj=localStorage;
-                const localStorageKeys=Object.keys(localStorageObj);
-                for(var i=0;i<localStorageKeys.length;i++){
-                    const key=localStorageKeys[i];
-                    const localStorageData=localStorageObj[key];
-                    const userDetailsObj=JSON.parse(localStorageData);
-                    showDetailsOnScreen(userDetailsObj)
-
-                }
+            axios.get(" https://crudcrud.com/api/333c58a4c79245f9b49de23a419bd808/ExpenseTracker")   
+            .then((response)=>{
+               console.log(response)
+               for(var i=0;i<response.data.length;i++){
+                showDetailsOnScreen(response.data[i])
+               }
             })
-            function deleteExpenses(Id){
-                 localStorage.removeItem(Id);
-                 removeUserFromScreen(Id);
+                .catch((err)=>{
+                    console.log(err)
+                })
+            })
+            function deleteExpenses(userId){
+                axios.delete(`https://crudcrud.com/api/333c58a4c79245f9b49de23a419bd808/ExpenseTracker/${userId}`)
+                .then((response)=>{
+                    console.log(response)
+                    removeUserFromScreen(userId);
 
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+                // localStorage.removeItem(userId);
+                 removeUserFromScreen(userId)
             }
-            function removeUserFromScreen(Id)
+            function removeUserFromScreen(userId)
             {
                 const parentNode=document.getElementById('list');
-                const childNodeToBeDeleted=document.getElementById(Id);
+                const childNodeToBeDeleted=document.getElementById(userId);
                 parentNode.removeChild(childNodeToBeDeleted);
             }
-            function EditExpenses(Id)
+            function EditExpenses(Id,amount,description,choose,userId)
             {
                 document.getElementById('Id').value=ide;
                 document.getElementById('amount').value=fill;
                 document.getElementById('description').value=description;
                 document.getElementById('choose').value=choose;
-                removeUserFromScreen(Id);
-                deleteExpenses(Id);
+                removeUserFromScreen(userId);
+                deleteExpenses(userId);
             }
         </script>
     </body>
